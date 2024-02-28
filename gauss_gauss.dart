@@ -143,7 +143,7 @@ void processResult() {
   //   // 15,666
   // }
 
-  // // Rumus mencari
+  // // Rumus
   // // C = ((arrMatrixBaruBaru[2][jumVar] - (arrMatrixBaruBaru[2][jumVar - 1] * C) - (arrMatrixBaruBaru[2][jumVar - 2] * B)) / arrMatrixBaruBaru[2][jumVar - 1]).round(); // 2 1
   // // B = ((arrMatrixBaruBaru[1][jumVar] - (arrMatrixBaruBaru[1][jumVar - 1] * C) - (arrMatrixBaruBaru[1][jumVar - 2] * B)) / arrMatrixBaruBaru[1][jumVar - 2]).round(); // 1 2
   // // A = ((arrMatrixBaruBaru[0][jumVar] - (arrMatrixBaruBaru[0][jumVar - 1] * C) - (arrMatrixBaruBaru[0][jumVar - 2] * B)) / arrMatrixBaruBaru[0][jumVar - 3]).round(); // 0 3
