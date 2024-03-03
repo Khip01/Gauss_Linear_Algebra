@@ -1,7 +1,7 @@
 import 'dart:io';
 
 // declare
-// int jumVar, jumBar;
+// int jumVar;
 int jumVar = 0;
 String? inputvalidation;
 List<List<double>> arrMatrix = [[]];
