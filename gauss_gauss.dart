@@ -5,7 +5,7 @@ import 'dart:io';
 int jumVar = 0;
 String? inputvalidation;
 List<List<double>> arrMatrix = [[]];
-List<List<double>> arrMatrixBaru = [[]];
+// List<List<double>> arrMatrixBaru = [[]];
 // List<List<double>> arrMatrixBaruBaru = [[]];
 
 void main() {
@@ -109,7 +109,7 @@ void askInput() {
 
 void process0() {
   for (var i = 0; i < jumVar - 1; i++) {
-    arrMatrixBaru = arrMatrix;
+    // arrMatrixBaru = arrMatrix;
     for (var row = i + 1; row < arrMatrix.length; row++) {
       int col = i;
       double kunciTop = arrMatrix[row][col];
@@ -120,9 +120,9 @@ void process0() {
         return arrMatrix[row][index] -
             kunciTop / kunciBottom * arrMatrix[col][index];
       });
-      arrMatrixBaru[row] = res;
+      arrMatrix[row] = res;
     }
-    showMatrix(arrMatrixBaru);
+    showMatrix(arrMatrix);
   }
 }
 
@@ -154,12 +154,12 @@ void processResult() {
     double sumRes = 0, value = 0;
     for (int col = result.length - 1; col >= 0; col--) {
       if (row == col) {
-        value += arrMatrixBaru[row][col];
+        value += arrMatrix[row][col];
         continue;
       }
-      sumRes += arrMatrixBaru[row][col] * result[col];
+      sumRes += arrMatrix[row][col] * result[col];
     }
-    result[row] = ((arrMatrixBaru[row][jumVar] - sumRes) / value).round();
+    result[row] = ((arrMatrix[row][jumVar] - sumRes) / value).round();
   }
 
   print("\nResult HP dari $jumVar variabel adalah:\n${result}");
