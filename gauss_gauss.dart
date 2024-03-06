@@ -159,7 +159,11 @@ void processResult() {
       }
       sumRes += arrMatrix[row][col] * result[col];
     }
-    result[row] = ((arrMatrix[row][jumVar] - sumRes) / value).round();
+    try {
+      result[row] = ((arrMatrix[row][jumVar] - sumRes) / value).round();
+    } catch (_) {
+      result[row] = 0;
+    }
   }
 
   print("\nResult HP dari $jumVar variabel adalah:\n${result}");
