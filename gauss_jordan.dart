@@ -3,6 +3,7 @@ import 'dart:io';
 int jumVar = 0;
 List<List<double>> arrMatrix = [[]];
 List<List<double>> arrMatrixBaru = [[]];
+int tempOutput = 0;
 
 void main() {
   // meminta input berapa variabel? (minimal 2 variabel, maks terserah)
@@ -45,7 +46,12 @@ void main() {
   // Output Result
   print("\n\nHasil variabel ditemukan!\n");
   for (var row = 0; row < arrMatrix.length; row++) {
-    print("Variabel ke-${row + 1} = ${arrMatrix[row].last.round()}");
+    try {
+      tempOutput = arrMatrix[row].last.round();
+    } catch (_) {
+      tempOutput = 0;
+    }
+    print("Variabel ke-${row + 1} = ${tempOutput}");
   }
 }
 
