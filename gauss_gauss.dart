@@ -1,16 +1,22 @@
 import 'dart:io';
 
+import 'utils.dart';
+
 // declare
 // int jumVar;
 int jumVar = 0;
 String? inputvalidation;
 List<List<double>> arrMatrix = [[]];
-// List<List<double>> arrMatrixBaru = [[]];
-// List<List<double>> arrMatrixBaruBaru = [[]];
 
-void main() {
+// logging
+late bool isLog;
+
+void main(List<String> args) {
+  // init logging
+  isLog = (args.isNotEmpty && args[0] == "-log");
+
   // meminta input berapa variabel? (minimal 2 variabel, maks terserah)
-  stdout.write("Masukkan berapa variabel yang ingin dihitung?\n=> ");
+  stdout.write("Enter how many variables you want to calculate?\n=> ");
   jumVar = inputValidation(stdin.readLineSync()).round();
 
   // Meminta input persamaan dari user
@@ -23,13 +29,16 @@ void main() {
   askInput();
 
   // Pembatas
-  stdout.write("\n\n==================PROCESSS==================");
+  stdout.write("\n\n==================PROCESSS==================\n\n");
 
   // Show matrix
   showMatrix(arrMatrix);
 
   // Proses Membuat 0
   process0();
+
+  // Pembatas
+  stdout.write("\n\n==================RESULT==================\n\n");
 
   // Proses Hasil A B C
   processResult();
@@ -38,12 +47,12 @@ void main() {
 double inputValidation(String? input) {
   while (input == null || input.isEmpty || int.tryParse(input) == null) {
     if (input == null || input.isEmpty) {
-      print("\nAnda harus memasukkan sebuah input!");
-      stdout.write("Masukkan berapa variabel yang ingin dihitung?\n=> ");
+      print("\nYou must provide an input!");
+      stdout.write("Enter how many variables you want to calculate?\n=> ");
       input = stdin.readLineSync();
     } else {
-      print("\nInput harus angka!");
-      stdout.write("Masukkan berapa variabel yang ingin dihitung?\n=> ");
+      print("\nThe input must be a number!");
+      stdout.write("Enter how many variables you want to calculate?\n=> ");
       input = stdin.readLineSync();
     }
   }
@@ -51,12 +60,15 @@ double inputValidation(String? input) {
 }
 
 void showMatrix(List<List<double>> arr) {
-  print("\n\nMatrix yang terbentuk:");
+  print("The resulting Matrix:");
+  int i = 1;
   arr.forEach((array1dim) {
+    stdout.write("B$i | ");
     for (var col = 0; col < array1dim.length - 1; col++) {
       stdout.write("${array1dim[col].toStringAsPrecision(3)} ");
     }
     print("= ${array1dim[array1dim.length - 1].toStringAsPrecision(3)}");
+    i++;
   });
 }
 
@@ -65,12 +77,12 @@ void askInput() {
     for (var kolom = 0; kolom < jumVar; kolom++) {
       // print("\n$arrMatrix");
       showMatrix(arrMatrix);
-      stdout.write("\nMasukkan B${baris + 1} variable ke-${kolom + 1}\n=> ");
+      stdout.write("\nEnter B${baris + 1} variable ${kolom + 1}\n=> ");
       arrMatrix[baris][kolom] = inputValidation(stdin.readLineSync());
     }
     // print("\n$arrMatrix");
     showMatrix(arrMatrix);
-    stdout.write("\nMasukkan hasil Persamaan dari B${baris + 1} \n=> ");
+    stdout.write("\nEnter the equation result from B${baris + 1} \n=> ");
     arrMatrix[baris][jumVar] = inputValidation(stdin.readLineSync());
   }
 }
@@ -109,6 +121,7 @@ void askInput() {
 
 void process0() {
   for (var i = 0; i < jumVar - 1; i++) {
+    print("\n");
     // arrMatrixBaru = arrMatrix;
     for (var row = i + 1; row < arrMatrix.length; row++) {
       int col = i;
@@ -116,10 +129,23 @@ void process0() {
       double kunciBottom = arrMatrix[col][col];
 
       // mengadaptasi satu deretan di row tersebut
+      Utils.getLogging(
+        isLog: isLog,
+        message: "===== CALCULATION START (on the B${row + 1})",
+      );
       var res = List.generate(arrMatrix[row].length, (index) {
+        Utils.getLogging(
+          isLog: isLog,
+          message:
+              "${arrMatrix[row][index]} - $kunciTop/$kunciBottom x ${arrMatrix[col][index]} is ${arrMatrix[row][index] - kunciTop / kunciBottom * arrMatrix[col][index]}",
+        );
         return arrMatrix[row][index] -
             kunciTop / kunciBottom * arrMatrix[col][index];
       });
+      Utils.getLogging(
+        isLog: isLog,
+        message: "----- CALCULATION COMPLETED",
+      );
       arrMatrix[row] = res;
     }
     showMatrix(arrMatrix);
@@ -150,6 +176,10 @@ void processResult() {
 
   // print("\nResult HP dari $jumVar variabel adalah:\n${result}");
 
+  Utils.getLogging(
+    isLog: isLog,
+    message: "===== RESULT CALCULATION BEGINS",
+  );
   for (int row = result.length - 1; row >= 0; row--) {
     double sumRes = 0, value = 0;
     for (int col = result.length - 1; col >= 0; col--) {
@@ -161,10 +191,19 @@ void processResult() {
     }
     try {
       result[row] = ((arrMatrix[row][jumVar] - sumRes) / value).round();
+      Utils.getLogging(
+        isLog: isLog,
+        message:
+            "B${row + 1} - x${row + 1}: (${arrMatrix[row][jumVar]} - $sumRes) / $value = ${result[row]}",
+      );
     } catch (_) {
       result[row] = 0;
     }
   }
+  Utils.getLogging(
+    isLog: isLog,
+    message: "===== RESULT CALCULATION COMPLETED",
+  );
 
-  print("\nResult HP dari $jumVar variabel adalah:\n${result}");
+  print("\nResult HP of $jumVar variables is :\n${result}");
 }
